@@ -1,23 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
 
+import './App.css';
+import { Bill, Expenses, Profile, Storage } from './storage';
+import { createContext, useEffect, useState } from 'react';
+export const Details = createContext()
 function App() {
+  const [expenses, setExpense] = useState(() => {
+    const ex = JSON.parse(localStorage.getItem('expense')) || []
+    return ex
+  })
+  const [friends, setfriends] = useState(() => {
+    const store = JSON.parse(localStorage.getItem('friends')) || []
+    return store
+  })
+
+  const [Name, setName] = useState('')
+  const [share, setShare] = useState('')
+  const [c, setC] = useState(false)
+  useEffect(() => {
+    if (!Name || !share) return
+    setfriends(fr => [...fr, { Name, share }])
+
+
+  }, [c])
+  useEffect(() => {
+    localStorage.setItem('friends', JSON.stringify(friends))
+
+    return () => {
+      setName('')
+      setShare('')
+    }
+  }, [friends])
+  //  localStorage.removeItem('friends')
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Details value={{ friends, setfriends, Name, setName, share, setShare, c, setC, expenses, setExpense }}>
+
+        <Storage></Storage>
+        <Profile></Profile>
+        <Expenses></Expenses>
+        <Bill></Bill>
+      </Details>
     </div>
   );
 }

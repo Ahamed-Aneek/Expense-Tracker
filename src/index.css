@@ -1,13 +1,448 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #e0e7ff;
+  --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(255, 255, 255, 1);
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 10px 25px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 20px 40px -5px rgba(0, 0, 0, 0.1), 0 10px 20px -5px rgba(0, 0, 0, 0.06);
+  --radius-xl: 24px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-main);
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.App {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: 
+    "storage profile"
+    "expenses profile"
+    "bill profile";
+  gap: 30px;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .App {
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "storage"
+      "expenses"
+      "profile"
+      "bill";
+    padding: 20px 16px;
+    gap: 20px;
+  }
+
+  .storage-container, .profile-container, .expenses-container, .bill-container {
+    padding: 24px;
+    border-radius: var(--radius-lg);
+  }
+
+  .profile-title, .bill-title {
+    font-size: 1.25rem;
+    margin: 0 0 16px 0;
+  }
+
+  .form-input, .expenses-input {
+    padding: 12px 14px;
+  }
+
+  .btn-add, .expenses-button {
+    padding: 12px 20px;
+  }
+  
+  .total-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .total-value, .bill-balance-value {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .App {
+    padding: 16px 12px;
+    gap: 16px;
+  }
+
+  .storage-container, .profile-container, .expenses-container, .bill-container {
+    padding: 20px;
+  }
+
+  .friend-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .friend-age {
+    align-self: stretch;
+    text-align: center;
+  }
+
+  .bill-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .bill-balance-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.storage-container {
+  grid-area: storage;
+}
+
+.profile-container {
+  grid-area: profile;
+}
+
+.expenses-container {
+  grid-area: expenses;
+}
+
+.bill-container {
+  grid-area: bill;
+}
+
+.storage-container, .profile-container, .expenses-container, .bill-container {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+}
+
+.storage-container:hover, .profile-container:hover, .expenses-container:hover, .bill-container:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-input, .expenses-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 2px solid #e2e8f0;
+  background: #ffffff;
+  color: var(--text-main);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: var(--transition);
+  box-sizing: border-box;
+}
+
+.form-input::placeholder, .expenses-input::placeholder {
+  color: #94a3b8;
+}
+
+.form-input:hover, .expenses-input:hover {
+  border-color: #cbd5e1;
+}
+
+.form-input:focus, .expenses-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-light);
+}
+
+.btn-add, .expenses-button {
+  width: 100%;
+  padding: 14px 24px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-add:hover, .expenses-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(79, 70, 229, 0.4);
+  filter: brightness(1.05);
+}
+
+.btn-add:active, .expenses-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+}
+
+.btn-add:disabled, .expenses-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Profile Specific */
+.profile-title {
+  margin: 0 0 24px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  position: relative;
+  display: inline-block;
+}
+
+.profile-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 48px;
+  height: 4px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+.friends-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.friend-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.friend-card:hover {
+  transform: translateX(4px) scale(1.01);
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow-md);
+}
+
+.friend-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.friend-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.friend-age-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.friend-age {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 6px 16px;
+  border-radius: 20px;
+  min-width: 60px;
+  text-align: center;
+}
+
+.total-container {
+  margin-top: 8px;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--primary-light) 0%, #eff6ff 100%);
+  border-radius: var(--radius-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #c7d2fe;
+}
+
+.total-label {
+  font-weight: 600;
+  color: var(--primary-hover);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.9rem;
+}
+
+.total-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--primary-hover);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  background: #f8fafc;
+  border-radius: var(--radius-lg);
+  border: 2px dashed #cbd5e1;
+  color: var(--text-muted);
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Expenses Specific */
+.expenses-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.expenses-button {
+  margin-top: 10px;
+}
+
+/* Bill Specific */
+.bill-title {
+  margin: 0 0 24px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  position: relative;
+  display: inline-block;
+}
+
+.bill-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 48px;
+  height: 4px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+.bill-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid #f1f5f9;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.bill-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-light);
+}
+
+.bill-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bill-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.bill-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.bill-divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 8px 0;
+}
+
+.bill-balance-row {
+  margin-top: 4px;
+}
+
+.bill-balance-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.bill-balance-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+  padding: 8px 16px;
+  border-radius: 20px;
+  min-width: 80px;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.bill-balance-value.positive {
+  color: #059669;
+  background: #d1fae5;
+}
+
+.bill-balance-value.negative {
+  color: #dc2626;
+  background: #fee2e2;
 }
