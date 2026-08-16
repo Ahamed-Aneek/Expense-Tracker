@@ -20,7 +20,7 @@ function App() {
     if (!Name || !share) return
     setfriends(fr => [...fr, { Name, share }])
 
-
+//eslint-disable-next-line react-hooks/exhaustive-deps
   }, [c])
   useEffect(() => {
     localStorage.setItem('friends', JSON.stringify(friends))
