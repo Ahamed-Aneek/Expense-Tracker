@@ -1,6 +1,6 @@
 
 import './App.css';
-import { Bill, Expenses, Profile, Storage } from './storage';
+import { Bill, Clear, Expenses, Pdf, Profile, Storage } from './storage';
 import { createContext, useEffect, useState } from 'react';
 export const Details = createContext()
 function App() {
@@ -40,6 +40,8 @@ function App() {
         <Profile></Profile>
         <Expenses></Expenses>
         <Bill></Bill>
+        <Clear></Clear>
+        <Pdf></Pdf>
       </Details>
     </div>
   );

@@ -446,3 +446,102 @@ body {
   color: #dc2626;
   background: #fee2e2;
 }
+
+/* Clear Component */
+.clear-container {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btn-clear {
+  padding: 14px 40px;
+  border-radius: var(--radius-md);
+  border: 2px solid #fee2e2;
+  background: #fff5f5;
+  color: #dc2626;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-clear:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(220, 38, 38, 0.15);
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #b91c1c;
+}
+
+.btn-clear:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.1);
+}
+
+.btn-clear:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(254, 226, 226, 0.5);
+  border-color: #ef4444;
+}
+
+/* Pdf Component */
+.pdf-container {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 24px 24px 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btn-pdf {
+  padding: 14px 40px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  transition: var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-pdf:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(79, 70, 229, 0.4);
+  filter: brightness(1.05);
+}
+
+.btn-pdf:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+}
+
+.btn-pdf:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--primary-light);
+}
+
+.btn-pdf svg {
+  width: 20px;
+  height: 20px;
+}

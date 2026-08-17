@@ -2,6 +2,7 @@
 
 import { useContext, useEffect, useState } from "react"
 import { Details } from "./App"
+import { jsPDF } from 'jspdf'
 import './index.css'
 
 export const Storage = function () {
@@ -52,6 +53,7 @@ export const Expenses = function () {
         context.setExpense(list => [...list, { expn, amount }])
         //  localStorage.removeItem('expense')
         //  context.setExpense('')
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [add])
     useEffect(() => {
         localStorage.setItem('expense', JSON.stringify(context.expenses))
@@ -147,4 +149,38 @@ export const Bill = function () {
             </div>
         </div>
     )
+}
+export const Clear = function () {
+    const context = useContext(Details)
+    const clear = () => {
+        context.setExpense('')
+        context.setfriends('')
+    }
+    return <div className="clear-container">
+        <button className="btn-clear" onClick={clear}>Clear</button>
+    </div>
+}
+
+export const Pdf = function () {
+    const [d, setD] = useState(false)
+    const context = useContext(Details)
+    useEffect(() => {
+        if (context.expenses.length === 0) return
+        const doc = new jsPDF()
+        context.expenses.map((e, i) => {
+            doc.text(`${i + 1}.${e.expn}:${e.amount}rs`, 10, (i + 1) * 10)
+
+        })
+        doc.save('myExpense.pdf')
+    }, [d])
+    return <div className="pdf-container">
+        <button className="btn-pdf" onClick={() => { setD(pr => !pr) }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download PDF
+        </button>
+    </div>
 }
