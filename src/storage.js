@@ -122,7 +122,7 @@ export const Profile = function () {
 }
 export const Bill = function () {
     const context = useContext(Details)
-    if (context.expenses.length === 0) return
+    if (context.expenses.length === 0 || context.friends.length===0) return
     const income = context.friends.map(e => +e.share).reduce((acc, curr) => acc + curr, 0)
     const cost = context.expenses.map(e => +e.amount).reduce((acc, curr) => acc + curr, 0)
     const balance = income - cost
@@ -143,7 +143,7 @@ export const Bill = function () {
                 <div className="bill-info bill-balance-row">
                     <span className="bill-balance-label">Balance</span>
                     <span className={`bill-balance-value ${balance >= 0 ? 'positive' : 'negative'}`}>
-                        {balance >= 0 ? '+' : '-'}{balance}
+                        {balance >= 0 ? '+' : ''}{balance}
                     </span>
                 </div>
             </div>
@@ -174,9 +174,10 @@ export const Pdf = function () {
             doc.text(`${i + 1}.${e.expn}:${e.amount}rs`, 10, (i + 1) * 10)
 
         })
-        doc.text(`total:${totalExpense}rs`,20,context.expenses.length*20)
+        doc.text(`Total:${totalExpense}rs`,20,context.expenses.length*20)
         doc.save('myExpense.pdf')
     }, [d])
+
     return <div className="pdf-container">
         <button className="btn-pdf" onClick={() => { setD(pr => pr+1) }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -188,3 +189,4 @@ export const Pdf = function () {
         </button>
     </div>
 }
+console.log('b')
