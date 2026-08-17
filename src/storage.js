@@ -162,9 +162,11 @@ export const Clear = function () {
 }
 
 export const Pdf = function () {
+
     const [d, setD] = useState(0)
     const context = useContext(Details)
-    const totalExpense=context.expenses.map(e=>+e.amount).reduce((acc,curr)=>acc+curr)
+        
+    const totalExpense=context.expenses.length>0 && context.expenses.map(e=>+e.amount).reduce((acc,curr)=>acc+curr)
     useEffect(() => {
         if (context.expenses.length === 0 || d===0 ) return
         const doc = new jsPDF()
