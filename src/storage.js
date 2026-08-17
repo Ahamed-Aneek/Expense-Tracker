@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react"
 import { Details } from "./App"
 import { jsPDF } from 'jspdf'
 import './index.css'
+import { Add } from "./extras"
 
 export const Storage = function () {
     const context = useContext(Details)
@@ -108,6 +109,7 @@ export const Profile = function () {
                             <span className="friend-age-label">Share</span>
                         </div>
                         <span className="friend-age">{friend.share}</span>
+                        <Add Name={friend.Name}></Add>
                     </div>
                 ))}
                 <div className="total-container">
@@ -189,4 +191,3 @@ export const Pdf = function () {
         </button>
     </div>
 }
-console.log('b')

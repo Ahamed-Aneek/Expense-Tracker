@@ -12,7 +12,7 @@ function App() {
     const store = JSON.parse(localStorage.getItem('friends')) || []
     return store
   })
-
+const[cur,setCur]=useState('')
   const [Name, setName] = useState('')
   const [share, setShare] = useState('')
   const [c, setC] = useState(false)
@@ -34,7 +34,7 @@ function App() {
 
   return (
     <div className="App">
-      <Details value={{ friends, setfriends, Name, setName, share, setShare, c, setC, expenses, setExpense }}>
+      <Details value={{ friends, setfriends, Name, setName, share, setShare, c, setC, expenses, setExpense,cur,setCur}}>
 
         <Storage></Storage>
         <Profile></Profile>
