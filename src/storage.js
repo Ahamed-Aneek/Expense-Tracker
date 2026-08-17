@@ -162,19 +162,21 @@ export const Clear = function () {
 }
 
 export const Pdf = function () {
-    const [d, setD] = useState(false)
+    const [d, setD] = useState(0)
     const context = useContext(Details)
+    const totalExpense=context.expenses.map(e=>+e.amount).reduce((acc,curr)=>acc+curr)
     useEffect(() => {
-        if (context.expenses.length === 0) return
+        if (context.expenses.length === 0 || d===0 ) return
         const doc = new jsPDF()
         context.expenses.map((e, i) => {
             doc.text(`${i + 1}.${e.expn}:${e.amount}rs`, 10, (i + 1) * 10)
 
         })
+        doc.text(`total:${totalExpense}rs`,20,context.expenses.length*20)
         doc.save('myExpense.pdf')
     }, [d])
     return <div className="pdf-container">
-        <button className="btn-pdf" onClick={() => { setD(pr => !pr) }}>
+        <button className="btn-pdf" onClick={() => { setD(pr => pr+1) }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="7 10 12 15 17 10"></polyline>
