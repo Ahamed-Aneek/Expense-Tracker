@@ -28,7 +28,7 @@ export const Add = function ({ Name }) {
       }
     })
     context.setfriends(arr)
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   }, [edit])
   return <div className="add-component">
     <button className="btn-edit" onClick={func}>Edit</button>
