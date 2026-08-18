@@ -773,3 +773,86 @@ body {
     padding: 28px 20px 22px;
   }
 }
+
+/* ─── Delete Component ──────────────────────────────────────────────────── */
+.delete-component {
+  display: flex;
+  align-items: center;
+}
+
+.btn-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid #fca5a5;
+  background: #fff5f5;
+  color: #dc2626;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(220, 38, 38, 0.08);
+  transition: var(--transition);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.btn-remove svg {
+  flex-shrink: 0;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover */
+.btn-remove:hover {
+  background: #fee2e2;
+  border-color: #ef4444;
+  color: #b91c1c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.18);
+}
+
+.btn-remove:hover svg {
+  transform: scale(1.15) rotate(-8deg);
+}
+
+/* Active / Pressed */
+.btn-remove:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 4px rgba(220, 38, 38, 0.12);
+  background: #fecaca;
+}
+
+/* Focus (keyboard-accessible) */
+.btn-remove:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+  border-color: #ef4444;
+}
+
+/* Disabled */
+.btn-remove:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+/* ─── Responsive (Delete) ───────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .delete-component {
+    width: 100%;
+  }
+
+  .btn-remove {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+}
