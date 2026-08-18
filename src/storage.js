@@ -1,10 +1,10 @@
 ''
 
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { Details } from "./App"
 import { jsPDF } from 'jspdf'
 import './index.css'
-import { Add } from "./extras"
+import { Add, Delete } from "./extras"
 
 export const Storage = function () {
     const context = useContext(Details)
@@ -44,18 +44,19 @@ export const Storage = function () {
 
 export const Expenses = function () {
     const context = useContext(Details)
-
-    const [expn, setExpn] = useState(0)
+    const get = useRef('')
+    const [qty, setQty] = useState(1)
+    const [expn, setExpn] = useState('')
     const [amount, setAmount] = useState(0)
-    const [add, setAdd] = useState(false)
-    const total = context.expenses.length > 0 && context.expenses.map(e => +e.amount).reduce((acc, curr) => acc + curr)
-    useEffect(() => {
+    const total = context.expenses.length > 0 && context.expenses.map(e => +e.tl).reduce((acc, curr) => acc + curr)
+    const add = () => {
         if (!expn || !amount) return
-        context.setExpense(list => [...list, { expn, amount }])
-        //  localStorage.removeItem('expense')
-        //  context.setExpense('')
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [add])
+        const tl = get.current.value * amount
+        console.log(tl)
+        context.setExpense(list => [...list, { expn, tl }])
+       setQty('')
+    }
+
     useEffect(() => {
         localStorage.setItem('expense', JSON.stringify(context.expenses))
         return () => {
@@ -85,7 +86,19 @@ export const Expenses = function () {
                     value={amount}
                 />
             </div>
-            <button className="expenses-button" onClick={() => { setAdd(prev => !prev) }}>Add Expense</button>
+            <div className="form-group">
+                <label className="form-label">Quantity</label>
+                <input
+                    type="number"
+                    className="expenses-input"
+                    placeholder="Enter quantity"
+                    ref={get}
+                    value={qty}
+                    min={1}
+                    onChange={(e) => { setQty(e.target.value) }}
+                />
+            </div>
+            <button className="expenses-button" onClick={add}>Add Expense</button>
             <div className="total-container" style={{ marginTop: '16px' }}>
                 <span className="total-label">Total Expense</span>
                 <span className="total-value">{total || 0}</span>
@@ -110,6 +123,7 @@ export const Profile = function () {
                         </div>
                         <span className="friend-age">{friend.share}</span>
                         <Add Name={friend.Name}></Add>
+                        <Delete Name={friend.Name}></Delete>
                     </div>
                 ))}
                 <div className="total-container">
@@ -124,9 +138,9 @@ export const Profile = function () {
 }
 export const Bill = function () {
     const context = useContext(Details)
-    if (context.expenses.length === 0 || context.friends.length===0) return
+    if (context.expenses.length === 0 || context.friends.length === 0) return
     const income = context.friends.map(e => +e.share).reduce((acc, curr) => acc + curr, 0)
-    const cost = context.expenses.map(e => +e.amount).reduce((acc, curr) => acc + curr, 0)
+    const cost = context.expenses.map(e => +e.tl).reduce((acc, curr) => acc + curr, 0)
     const balance = income - cost
 
     return (
@@ -167,21 +181,21 @@ export const Pdf = function () {
 
     const [d, setD] = useState(0)
     const context = useContext(Details)
-        
-    const totalExpense=context.expenses.length>0 && context.expenses.map(e=>+e.amount).reduce((acc,curr)=>acc+curr)
+
+    const totalExpense = context.expenses.length > 0 && context.expenses.map(e => +e.amount).reduce((acc, curr) => acc + curr)
     useEffect(() => {
-        if (context.expenses.length === 0 || d===0 ) return
+        if (context.expenses.length === 0 || d === 0) return
         const doc = new jsPDF()
         context.expenses.map((e, i) => {
-            doc.text(`${i + 1}.${e.expn}:${e.amount}rs`, 10, (i + 1) * 10)
-
+            doc.text(`${i + 1}.${e.expn}:${e.tl}rs`, 10, (i + 1) * 10)
+            return ''
         })
-        doc.text(`Total:${totalExpense}rs`,20,context.expenses.length*20)
+        doc.text(`Total:${totalExpense}rs`, 20, context.expenses.length * 20)
         doc.save('myExpense.pdf')
     }, [d])
 
     return <div className="pdf-container">
-        <button className="btn-pdf" onClick={() => { setD(pr => pr+1) }}>
+        <button className="btn-pdf" onClick={() => { setD(pr => pr + 1) }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="7 10 12 15 17 10"></polyline>
