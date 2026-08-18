@@ -74,6 +74,7 @@ export const Expenses = function () {
                     placeholder="Enter expense name"
                     onChange={(e) => { setExpn(e.target.value) }}
                     value={expn}
+                
                 />
             </div>
             <div className="form-group">
@@ -182,7 +183,7 @@ export const Pdf = function () {
     const [d, setD] = useState(0)
     const context = useContext(Details)
 
-    const totalExpense = context.expenses.length > 0 && context.expenses.map(e => +e.amount).reduce((acc, curr) => acc + curr)
+    const totalExpense = context.expenses.length > 0 && context.expenses.map(e => +e.tl).reduce((acc, curr) => acc + curr)
     useEffect(() => {
         if (context.expenses.length === 0 || d === 0) return
         const doc = new jsPDF()
