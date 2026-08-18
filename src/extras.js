@@ -12,7 +12,7 @@ export const Add = function ({ Name }) {
   }
   const insert = (e) => {
     e.preventDefault()
-    setEdit(track.current.value)
+    // setEdit(track.current.value)
     if (!edit) return
     const arr = context.friends.map((el) => {
       if (el.Name === context.cur) {
@@ -22,8 +22,9 @@ export const Add = function ({ Name }) {
         return el
       }
     })
+  
     context.setfriends(arr)
-
+      setEdit('')
   }
   return <div className="add-component">
     <button className="btn-edit" onClick={func}>Edit</button>
@@ -31,7 +32,7 @@ export const Add = function ({ Name }) {
       <div className="modal-overlay" onClick={() => context.setCur('')}>
         <form className="add-form modal-popup" onClick={(e) => e.stopPropagation()}>
           <p className="modal-title">Add Amount for <strong>{Name}</strong></p>
-          <input className="add-input" type="number" placeholder="Amount" ref={track} autoFocus />
+          <input className="add-input" type="number" placeholder="Amount" ref={track} autoFocus value={edit} onChange={(e)=>setEdit(e.target.value)} />
           <div className="modal-actions">
             <button className="btn-submit" onClick={insert}>Add</button>
             <button type="button" className="btn-close" onClick={() => context.setCur('')}>Cancel</button>
