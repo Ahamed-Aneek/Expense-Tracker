@@ -24,7 +24,7 @@ export const Add = function ({ Name }) {
     })
     context.setfriends(arr)
 
-  }, [edit])
+  }
   return <div className="add-component">
     <button className="btn-edit" onClick={func}>Edit</button>
     {Name === context.cur && (
